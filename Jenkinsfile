@@ -43,11 +43,9 @@ stages
     }
 	stage ('Start sonarqube analysis')
 	{
-		environment {
-        scannerHome1 = tool 'sonar_scanner_dotnet'
-    }
 		steps
 		{
+			def scannerHome = tool 'sonar_scanner_dotnet';
 			withSonarQubeEnv('SonarQube-Default')
 			{
 				echo "${scannerHome1}"
