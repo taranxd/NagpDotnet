@@ -82,14 +82,14 @@ stages
 	{
 		steps
 		{
-		    sh returnStdout: true, script: 'docker build --no-cache -t localhost:5000/dotnetcoreapp_taran:${BUILD_NUMBER} .'
+		    sh returnStdout: true, script: 'docker build --no-cache -t localhost:2000/dotnetcoreapp_taran:${BUILD_NUMBER} .'
 		}
 	}
 	stage ('Push to DTR')
 	{
 		steps
 		{
-			sh returnStdout: true, script: 'docker push localhost:5000/dotnetcoreapp_taran:${BUILD_NUMBER}'
+			sh returnStdout: true, script: 'docker push localhost:2000/dotnetcoreapp_taran:${BUILD_NUMBER}'
 		}
 	}
 	stage ('Stop Running container')
@@ -110,7 +110,7 @@ stages
 	{
 	    steps
 	    {
-	       sh 'docker run --name dotnetcoreapp_taran -d -p 1000:80 localhost:5000/dotnetcoreapp_taran:${BUILD_NUMBER}'
+	       sh 'docker run --name dotnetcoreapp_taran -d -p 1000:80 localhost:2000/dotnetcoreapp_taran:${BUILD_NUMBER}'
 	    }
 	}
 
