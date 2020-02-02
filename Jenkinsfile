@@ -46,7 +46,8 @@ stages
 		{
 			withSonarQubeEnv('SonarQube-Default')
 			{
-				sh "dotnet sonarscanner begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
+				sh "dotnet sonar_scanner_dotnet/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
+				//sh "dotnet sonarscanner begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
 
 			}
 		}
