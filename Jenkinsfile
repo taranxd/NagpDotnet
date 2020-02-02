@@ -64,7 +64,7 @@ stages
 		{
 		    withSonarQubeEnv('SonarQube-Default')
 			{
-				sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+				sh "dotnet 'C:/sonar-scanner/SonarScanner.MSBuild.dll' end"
 			}
 		}
 	}
@@ -79,14 +79,14 @@ stages
 	{
 		steps
 		{
-		    sh returnStdout: true, script: '/bin/docker build --no-cache -t dtr.nagarro.com:443/dotnetcoreapp_charugarg:${BUILD_NUMBER} .'
+		    sh returnStdout: true, script: '/bin/docker build --no-cache -t localhost:6000/dotnetcoreapp_taran:${BUILD_NUMBER} .'
 		}
 	}
 	stage ('Push to DTR')
 	{
 		steps
 		{
-			sh returnStdout: true, script: '/bin/docker push dtr.nagarro.com:443/dotnetcoreapp_charugarg:${BUILD_NUMBER}'
+			sh returnStdout: true, script: '/bin/docker push localhost:6000/dotnetcoreapp_taran:${BUILD_NUMBER}'
 		}
 	}
 	stage ('Stop Running container')
@@ -107,7 +107,7 @@ stages
 	{
 	    steps
 	    {
-	       sh 'docker run --name dotnetcoreapp_charugarg -d -p 5000:80 dtr.nagarro.com:443/dotnetcoreapp_charugarg:${BUILD_NUMBER}'
+	       sh 'docker run --name dotnetcoreapp_taran -d -p 5000:80 localhost:6000/dotnetcoreapp_taran:${BUILD_NUMBER}'
 	    }
 	}
 	stage ('helm charts deployment')
