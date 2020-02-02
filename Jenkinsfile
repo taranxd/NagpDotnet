@@ -4,7 +4,7 @@ pipeline{
 environment
 {
     //scannerHome = tool name: 'sonar_scanner_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
-	scannerHome = tool 'sonar_scanner_dotnet'
+	// scannerHome = tool 'sonar_scanner_dotnet'
 		// scannerHome = tool name: 'SonarQube Scanner 4.2', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
 
 }
@@ -43,6 +43,9 @@ stages
     }
 	stage ('Start sonarqube analysis')
 	{
+		environment {
+        scannerHome = tool 'sonar_scanner_dotnet'
+    }
 		steps
 		{
 			withSonarQubeEnv('SonarQube-Default')
