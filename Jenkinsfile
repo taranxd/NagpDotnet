@@ -3,10 +3,7 @@ pipeline{
 
 environment
 {
-    //scannerHome = tool name: 'sonar_scanner_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
-	scannerHome = tool 'sonar_scanner_dotnet'
-		// scannerHome = tool name: 'SonarQube Scanner 4.2', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
-
+	scannerHome = tool name: 'sonar_scanner_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
 }
 options
    {
@@ -47,12 +44,8 @@ stages
 		{
 			withSonarQubeEnv('SonarQube-Default')
 			{
-				echo "${scannerHome1}"
-				
-				
-				def scannerHome1 = tool name: 'sonar_scanner_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
-
-				sh "dotnet ${scannerHome1}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
+				echo "${env.scannerHome}"
+				sh "dotnet ${env.scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
 				//sh "dotnet sonarscanner begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
 
 			}
