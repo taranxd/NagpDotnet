@@ -45,7 +45,9 @@ stages
 			withSonarQubeEnv('SonarQube-Default')
 			{
 				echo "${env.scannerHome}"
-				sh "dotnet 'C:/sonar-scanner/SonarScanner.MSBuild.dll' begin /key:$JOB_NAME /name:$JOB_NAME /version:1.0 "
+				// sh "dotnet 'C:/sonar-scanner/SonarScanner.MSBuild.dll' begin /key:$JOB_NAME /name:$JOB_NAME /version:1.0 "
+				sh "dotnet sonarscanner begin /key:$JOB_NAME /name:$JOB_NAME /version:1.0 "
+
 				//sh "dotnet sonarscanner begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
 
 			}
@@ -64,7 +66,8 @@ stages
 		{
 		    withSonarQubeEnv('SonarQube-Default')
 			{
-				sh "dotnet 'C:/sonar-scanner/SonarScanner.MSBuild.dll' end"
+				// sh "dotnet 'C:/sonar-scanner/SonarScanner.MSBuild.dll' end"
+				sh "dotnet sonarscanner end"
 			}
 		}
 	}
@@ -110,16 +113,6 @@ stages
 	       sh 'docker run --name dotnetcoreapp_taran -d -p 5000:80 localhost:5000/dotnetcoreapp_taran:${BUILD_NUMBER}'
 	    }
 	}
-	stage ('helm charts deployment')
-	{
-	    steps
-		{
-		    sh '''
-		        kubectl create namespace gunika-dotnet
-		        helm install devops-helm-dotnet mychart-dotnet --set image=dtr.nagarro.com:443/dotnetcoreapp_charugarg:${BUILD_NUMBER} -n gunika-dotnet
-		        '''
-		    }
-		}
 
 }
 
