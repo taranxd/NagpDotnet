@@ -110,7 +110,7 @@ stages
 	{
 	    steps
 	    {
-	       sh 'docker run --name dotnetcoreapp_taran -d -p 5000:80 localhost:5000/dotnetcoreapp_taran:${BUILD_NUMBER}'
+	       sh 'docker run --name dotnetcoreapp_taran -d -p 1000:80 localhost:5000/dotnetcoreapp_taran:${BUILD_NUMBER}'
 	    }
 	}
 
