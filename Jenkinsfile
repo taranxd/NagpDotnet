@@ -3,23 +3,26 @@ pipeline{
 
 environment
 {
-    scannerHome = tool name: 'sonar_scanner_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'   
+echo  " ********** Environment starts ******************"
+    scannerHome = tool name: 'sonar_scanner_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
+		// scannerHome = tool name: 'SonarQube Scanner 4.2', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
+
 }
 options
    {
       // Append time stamp to the console output.
       timestamps()
-      
+
       timeout(time: 1, unit: 'HOURS')
-      
+
       // Do not automatically checkout the SCM on every stage. We stash what
       // we need to save time.
-     // skipDefaultCheckout()
-      
+      // skipDefaultCheckout()
+
       // Discard old builds after 10 days or 30 builds count.
       buildDiscarder(logRotator(daysToKeepStr: '5', numToKeepStr: '5'))
    }
-     
+
 stages
 {
 	stage ('checkout')
@@ -27,14 +30,15 @@ stages
 		steps
 		{
 			echo  " ********** Clone starts ******************"
-		    checkout scm	 
+		    checkout scm
 		}
     }
     stage ('nuget')
     {
 		steps
 		{
-			sh "dotnet restore"	 
+		echo  " ********** Nuget starts ******************"
+			sh "dotnet restore"
 		}
     }
 	stage ('Start sonarqube analysis')
@@ -44,7 +48,7 @@ stages
 			withSonarQubeEnv('Test_Sonar')
 			{
 				sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "
-			    
+
 			}
 		}
 	}
@@ -53,10 +57,10 @@ stages
 		steps
 		{
 			sh "dotnet build -c Release -o WebApplication4/app/build"
-		}	
+		}
 	}
 	stage ('SonarQube Analysis end')
-	{	
+	{
 		steps
 		{
 		    withSonarQubeEnv('Test_Sonar')
@@ -121,9 +125,9 @@ stages
 }
 
  post {
-        always 
+        always
 		{
-			emailext attachmentsPattern: 'report.html', body: '${JELLY_SCRIPT,template="health"}', mimeType: 'text/html', recipientProviders: [[$class: 'RequesterRecipientProvider']], replyTo: 'charu.garg@nagarro.com', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'charu.garg@nagarro.com'
+			emailext attachmentsPattern: 'report.html', body: '${JELLY_SCRIPT,template="health"}', mimeType: 'text/html', recipientProviders: [[$class: 'RequesterRecipientProvider']], replyTo: 'taran.goel@nagarro.com', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'taran.goel@nagarro.com'
         }
     }
 }
